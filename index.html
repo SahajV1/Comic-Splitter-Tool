@@ -1,288 +1,232 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<title>HabitLoop — Mobile Prototype</title>
-<style>
-:root{
-  --bg1: linear-gradient(135deg,#ff9a9e 0%, #fad0c4 100%);
-  --bg2: linear-gradient(135deg,#a18cd1 0%, #fbc2eb 100%);
-  --accent:#ff7a59;
-  --muted:#9aa3b2;
-  --card:#ffffffee;
-  font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
-}
-*{box-sizing:border-box}
-html,body{height:100%;}
-body{
-  background: #0f1723;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:20px;
-  color:#072040;
-}
-.device{
-  width:390px;
-  height:844px;
-  background:linear-gradient(180deg,#ffffff 0%, #f3f7fb 100%);
-  border-radius:36px;
-  overflow:hidden;
-  box-shadow:0 20px 50px rgba(2,6,23,0.4);
-  position:relative;
-}
-.topbar{height:64px; display:flex; align-items:center; padding:0 16px; border-bottom:1px solid #eee;}
-.logo{font-weight:700; color:#0b2540;}
-.center{padding:20px; overflow:auto; height: calc(100% - 64px);} 
-.screen{position:absolute; inset:0; display:flex; flex-direction:column;}
-.hidden{display:none}
-.avatar{font-size:56px; background:linear-gradient(90deg,#ffd8c4,#ffc3a6); width:96px; height:96px; border-radius:24px; display:flex; align-items:center; justify-content:center; margin:20px auto;}
-h1,h2,h3{margin:8px 0 12px 0; text-align:center;}
-p{color:var(--muted); text-align:center; margin:0 12px 12px;}
-.btn{display:inline-block; padding:12px 16px; border-radius:12px; border:none; background:#fff; box-shadow:0 6px 18px rgba(11,37,64,0.06); font-weight:600; margin:6px; min-width:120px;}
-.btn.primary{background:linear-gradient(90deg,#ff7a59,#ffb199); color:#fff; border:0; box-shadow:0 10px 30px rgba(255,122,89,0.18)}
-.btn.outline{background:transparent; border:1px solid #ddd;}
-.btn.ghost{background:transparent; color:var(--muted); border:0;}
-.hint{font-size:12px; color:#8b98a8; text-align:center; margin-top:10px;}
-.list{display:flex; flex-direction:column; gap:8px; margin-top:12px;}
-.chip{background:var(--card); padding:12px; border-radius:12px; display:flex; align-items:center; gap:12px; box-shadow:0 6px 18px rgba(11,37,64,0.04);} 
-.rings{display:flex; gap:16px; justify-content:center; margin:18px 0;}
-.ring{width:120px; height:120px; border-radius:999px; background:conic-gradient(#ff7a59 0% , #ffd1c3 40%, #f0f3f8 0%); display:flex; align-items:center; justify-content:center; box-shadow:0 8px 30px rgba(11,37,64,0.06);} 
-.ring-inner{background:#fff; width:88px; height:88px; border-radius:999px; display:flex; align-items:center; justify-content:center; flex-direction:column; font-weight:700;}
-.small{font-size:12px; color:#777; margin-top:6px;}
-.habit-card{background:var(--card); border-radius:14px; padding:12px; margin:10px 0; box-shadow:0 8px 24px rgba(11,37,64,0.04);} 
-.habit-title{font-weight:700; margin-bottom:8px;}
-.habit-actions{display:flex; gap:8px; justify-content:flex-end;}
-.footer-actions{display:flex; gap:8px; justify-content:space-between; margin-top:12px;}
-.back{background:transparent; border:0; font-size:24px; margin-right:12px;}
-.icon{background:transparent; border:0; font-size:20px; margin-left:auto;}
-.mood-row{display:flex; gap:8px; justify-content:center; margin:12px 0;}
-.mood{font-size:24px; background:#fff; border-radius:12px; padding:12px; border:1px solid #eee;}
-textarea{width:100%; min-height:80px; border-radius:12px; padding:10px; border:1px solid #eee; margin:12px 0; resize:none;}
-.team-list{display:flex; flex-direction:column; gap:10px; margin-top:12px;}
-.member{display:flex; gap:12px; align-items:center; background:var(--card); padding:10px; border-radius:10px;}
-.member .avatar{width:48px; height:48px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:700; background:linear-gradient(90deg,#a18cd1,#fbc2eb);} 
-.summary{background:var(--card); padding:12px; border-radius:12px; box-shadow:0 8px 24px rgba(11,37,64,0.04);} 
-.reward-list{display:flex; flex-direction:column; gap:10px; margin-top:12px;}
-.reward{display:flex; justify-content:space-between; align-items:center; background:var(--card); padding:12px; border-radius:10px;}
-.small.muted{font-size:12px; color:var(--muted); margin-top:12px; text-align:center;}
-.messages{display:flex; flex-direction:column; gap:8px; margin-bottom:12px;}
-.msg{padding:8px 12px; border-radius:12px; max-width:72%;}
-.msg.from{background:#fff; align-self:flex-start;}
-.msg.to{background:linear-gradient(90deg,#ff7a59,#ffb199); color:#fff; align-self:flex-end;}
-.chatbox{display:flex; gap:8px; align-items:center;}
-.chatbox input{flex:1; padding:10px; border-radius:10px; border:1px solid #eee;}
-.muted{color:var(--muted); font-size:13px;}
-</style>
+  <meta charset="UTF-8" />
+  <title>Image Splitter & Compressor</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/psd.js@4.0.0/dist/psd.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #eef1f7;
+      display: flex;
+      justify-content: center;
+      padding: 50px 20px;
+    }
+    .app {
+      background: #fff;
+      padding: 40px;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      max-width: 800px;
+      width: 100%;
+    }
+    h1 {
+      font-size: 26px;
+      margin-bottom: 25px;
+      color: #2c3e50;
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #444;
+    }
+    input[type="number"], select, input[type="file"] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+    }
+    button {
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 14px 26px;
+      font-size: 16px;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #4338ca;
+    }
+    .status {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #555;
+    }
+    .preview-grid {
+      margin-top: 30px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+    }
+    .preview-item {
+      text-align: center;
+    }
+    .preview-item img {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+      border: 1px solid #ddd;
+      background: #fff;
+      padding: 4px;
+    }
+    .preview-item span {
+      font-size: 13px;
+      color: #777;
+      display: block;
+      margin-top: 6px;
+    }
+  </style>
 </head>
 <body>
-<div id="app" class="device">
-  <!-- Onboarding Screen -->
-  <div class="screen" id="onboarding">
-    <header class="topbar"><div class="logo">HabitLoop</div></header>
-    <main class="center">
-      <div class="avatar">🤖</div>
-      <h1>Welcome to HabitLoop</h1>
-      <p>AI-guided micro-habits for workplace productivity. Build focus with tiny, team-backed loops.</p>
-      <button class="btn primary" data-action="to=choose">Get started</button>
-      <div class="hint">Mobile prototype — tap to navigate</div>
-    </main>
+  <div class="app">
+    <h1>Image Splitter & Compressor</h1>
+    <div class="form-group">
+      <label for="fileInput">Select PNG/JPEG/JPG Files</label>
+      <input type="file" id="fileInput" accept=".png,.jpg,.jpeg,.psd" multiple />
+    </div>
+    <div class="form-group">
+      <label for="widthInput">Target Width (px) (default: 800)</label>
+      <input type="number" id="widthInput" placeholder="800" min="100" />
+    </div>
+    <div class="form-group">
+      <label for="heightInput">Chunk Height (px) (default: 1000)</label>
+      <input type="number" id="heightInput" placeholder="1000" min="100" />
+    </div>
+    <button onclick="splitAndZip()">Split & Download ZIP</button>
+    <div class="status" id="status"></div>
+    <div class="preview-grid" id="previewContainer"></div>
   </div>
 
-  <!-- Choose Habits -->
-  <div class="screen hidden" id="choose">
-    <header class="topbar"><button class="back" data-action="to=onboarding">‹</button><div class="logo">HabitLoop</div></header>
-    <main class="center">
-      <h2>Choose 2 productivity micro-habits</h2>
-      <div class="list">
-        <label class="chip"><input type="checkbox" value="Deep Work"> Deep Work (25m)</label>
-        <label class="chip"><input type="checkbox" value="Daily Wrap"> Daily Wrap-up (5m)</label>
-        <label class="chip"><input type="checkbox" value="Inbox Sweep"> Inbox Sweep (10m)</label>
-        <label class="chip"><input type="checkbox" value="Stand Stretch"> Stand & Stretch (3m)</label>
-        <label class="chip"><input type="checkbox" value="Reading"> Read 5 pages</label>
-      </div>
-      <button class="btn primary" data-action="to=dashboard">Start My Loop</button>
-    </main>
-  </div>
+  <script>
+    async function splitAndZip() {
+      const fileInput = document.getElementById("fileInput");
+      const statusDiv = document.getElementById("status");
+      const previewContainer = document.getElementById("previewContainer");
 
-  <!-- Dashboard -->
-  <div class="screen hidden" id="dashboard">
-    <header class="topbar"><div class="logo">HabitLoop</div><button class="icon" data-action="to=pod">👥</button></header>
-    <main class="center">
-      <h2>Today</h2>
-      <div class="rings">
-        <div class="ring" id="ring1">
-          <div class="ring-inner">3/7<br><span class="small">Loop</span></div>
-        </div>
-        <div class="ring" id="ring2">
-          <div class="ring-inner">5<br><span class="small">Tokens</span></div>
-        </div>
-      </div>
-      <div class="habit-card">
-        <div class="habit-title">Deep Work — 25m</div>
-        <div class="habit-actions">
-          <button class="btn" data-action="to=checkin">Quick Check‑in</button>
-          <button class="btn outline" data-action="complete=1">Mark Done</button>
-        </div>
-      </div>
-      <div class="habit-card">
-        <div class="habit-title">Daily Wrap‑up — 5m</div>
-        <div class="habit-actions">
-          <button class="btn" data-action="to=checkin">Quick Check‑in</button>
-          <button class="btn outline" data-action="complete=2">Mark Done</button>
-        </div>
-      </div>
-      <div class="footer-actions">
-        <button class="btn ghost" data-action="to=reflection">Weekly Reflection</button>
-        <button class="btn ghost" data-action="to=rewards">Rewards</button>
-      </div>
-    </main>
-  </div>
+      previewContainer.innerHTML = "";
+      statusDiv.textContent = "";
 
-  <!-- Check-in Modal / Screen -->
-  <div class="screen hidden" id="checkin">
-    <header class="topbar"><button class="back" data-action="to=dashboard">‹</button><div class="logo">Check-in</div></header>
-    <main class="center">
-      <h3>How did it go?</h3>
-      <div class="mood-row">
-        <button class="mood">😃</button>
-        <button class="mood">🙂</button>
-        <button class="mood">😐</button>
-        <button class="mood">😕</button>
-        <button class="mood">😫</button>
-      </div>
-      <textarea id="note" placeholder="Add a 1-line note (optional)"></textarea>
-      <div class="actions">
-        <button class="btn primary" id="saveCheckin">Save</button>
-        <button class="btn outline" data-action="to=dashboard">Skip</button>
-      </div>
-    </main>
-  </div>
+      if (!fileInput.files.length) {
+        alert("Please select image files.");
+        return;
+      }
 
-  <!-- Pod / Team Screen -->
-  <div class="screen hidden" id="pod">
-    <header class="topbar"><button class="back" data-action="to=dashboard">‹</button><div class="logo">Focus Pod</div></header>
-    <main class="center">
-      <h3>Your Team</h3>
-      <div class="team-list">
-        <div class="member"><div class="avatar">AB</div><div class="meta"><strong>Anita</strong><div class="small">3-day streak</div></div></div>
-        <div class="member"><div class="avatar">RK</div><div class="meta"><strong>Rohit</strong><div class="small">7-day streak</div></div></div>
-        <div class="member"><div class="avatar">SM</div><div class="meta"><strong>Sana</strong><div class="small">1-day</div></div></div>
-      </div>
-      <div class="pod-actions">
-        <button class="btn primary" data-action="to=chat">Send Encouragement</button>
-        <button class="btn outline" data-action="to=dashboard">Return</button>
-      </div>
-    </main>
-  </div>
+      const targetWidth = parseInt(document.getElementById("widthInput").value) || 800;
+      const chunkHeight = parseInt(document.getElementById("heightInput").value) || 1000;
 
-  <!-- Reflection -->
-  <div class="screen hidden" id="reflection">
-    <header class="topbar"><button class="back" data-action="to=dashboard">‹</button><div class="logo">Reflection</div></header>
-    <main class="center">
-      <h3>Weekly Summary</h3>
-      <div class="summary">
-        <p><strong>Team Loop Completion:</strong> 4/5 completed at least one loop this week.</p>
-        <p><strong>Top Insight:</strong> Deep Work sessions increased focus by estimated 12%.</p>
-        <p><strong>Recommendation:</strong> Try a 20-minute morning power block on Tue & Thu.</p>
-      </div>
-      <button class="btn primary" data-action="to=rewards">Redeem Tokens</button>
-    </main>
-  </div>
+      const zip = new JSZip();
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
 
-  <!-- Rewards -->
-  <div class="screen hidden" id="rewards">
-    <header class="topbar"><button class="back" data-action="to=dashboard">‹</button><div class="logo">Rewards</div></header>
-    <main class="center">
-      <h3>Rewards</h3>
-      <div class="reward-list">
-        <div class="reward"><div class="rtitle">Coffee Voucher</div><div class="rcost">10 tokens</div><button class="btn">Redeem</button></div>
-        <div class="reward"><div class="rtitle">Book Credit</div><div class="rcost">25 tokens</div><button class="btn">Redeem</button></div>
-        <div class="reward"><div class="rtitle">Team Lunch</div><div class="rcost">100 tokens</div><button class="btn">Request</button></div>
-      </div>
-      <div class="small muted">Tokens are fictional in this prototype.</div>
-    </main>
-  </div>
+      statusDiv.textContent = "Processing...";
 
-  <!-- Simple Chat (stub) -->
-  <div class="screen hidden" id="chat">
-    <header class="topbar"><button class="back" data-action="to=pod">‹</button><div class="logo">Encourage</div></header>
-    <main class="center">
-      <div class="messages">
-        <div class="msg from">Anita: You got this! 👊</div>
-        <div class="msg to">You: Thanks — on it!</div>
-      </div>
-      <div class="chatbox">
-        <input id="chatinput" placeholder="Write encouragement..." />
-        <button class="btn" id="sendChat">Send</button>
-      </div>
-    </main>
-  </div>
+      for (let fileIndex = 0; fileIndex < fileInput.files.length; fileIndex++) {
+        const file = fileInput.files[fileIndex];
+        const img = await loadImageFromFile(file);
+        const baseName = file.name.replace(/\.(png|jpg|jpeg|psd)$/i, '');
 
-</div>
+        const scale = targetWidth / img.width;
+        const scaledHeight = Math.floor(img.height * scale);
 
-<script>
-// Simple navigation and state for the prototype
+        const resizedCanvas = document.createElement("canvas");
+        resizedCanvas.width = targetWidth;
+        resizedCanvas.height = scaledHeight;
+        const rctx = resizedCanvas.getContext("2d");
+        rctx.drawImage(img, 0, 0, targetWidth, scaledHeight);
 
-document.addEventListener('click', function(e){
-  const target = e.target;
-  const action = target.getAttribute && target.getAttribute('data-action');
-  if(action){
-    const to = action.split('to=')[1];
-    if(to){
-      navigateTo(to);
+        const parts = Math.ceil(scaledHeight / chunkHeight);
+
+        for (let i = 0; i < parts; i++) {
+          const currentHeight = Math.min(chunkHeight, scaledHeight - i * chunkHeight);
+          canvas.width = targetWidth;
+          canvas.height = currentHeight;
+
+          ctx.clearRect(0, 0, targetWidth, currentHeight);
+          ctx.fillStyle = "#FFFFFF";
+          ctx.fillRect(0, 0, targetWidth, currentHeight);
+          ctx.drawImage(resizedCanvas, 0, -i * chunkHeight);
+
+          // PNG compression fallback with JPEG if too big
+          let blob = await toSizedBlob(canvas, "image/png");
+          if (blob.size > 1.5 * 1024 * 1024) {
+            // fallback to JPEG compression if PNG is too large
+            let quality = 0.92;
+            do {
+              blob = await toSizedBlob(canvas, "image/jpeg", quality);
+              quality -= 0.05;
+            } while (blob.size > 1.5 * 1024 * 1024 && quality > 0.2);
+          }
+
+          const ext = blob.type === "image/png" ? "png" : "jpg";
+          const fileName = `${baseName}_part_${i + 1}.${ext}`;
+          zip.file(fileName, blob);
+
+          const imgPreview = document.createElement("img");
+          imgPreview.src = URL.createObjectURL(blob);
+
+          const itemDiv = document.createElement("div");
+          itemDiv.className = "preview-item";
+          itemDiv.appendChild(imgPreview);
+          itemDiv.appendChild(Object.assign(document.createElement("span"), { textContent: fileName }));
+          previewContainer.appendChild(itemDiv);
+        }
+      }
+
+      zip.generateAsync({ type: "blob" }).then(zipBlob => {
+        const url = URL.createObjectURL(zipBlob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "split_images.zip";
+        link.click();
+        statusDiv.textContent = "✅ Done! ZIP file is ready.";
+      });
     }
-    const complete = action.split('complete=')[1];
-    if(complete){
-      // simulate marking done: pulse token ring
-      pulseRing();
-      showToast('Marked done — +1 token');
-    }
-  }
-});
-function navigateTo(screenId){
-  const screens = document.querySelectorAll('.screen');
-  screens.forEach(s=> s.classList.add('hidden'));
-  const target = document.getElementById(screenId);
-  if(target) target.classList.remove('hidden');
-}
-function pulseRing(){
-  const r = document.getElementById('ring2');
-  r.animate([{transform:'scale(1)'},{transform:'scale(1.06)'},{transform:'scale(1)'}], {duration:600, easing:'ease-out'});
-}
-document.getElementById('saveCheckin')?.addEventListener('click', function(){
-  navigateTo('dashboard');
-  showToast('Check-in saved — nice!');
-});
-document.getElementById('sendChat')?.addEventListener('click', function(){
-  const input = document.getElementById('chatinput');
-  if(input && input.value.trim()){
-    const m = document.createElement('div');
-    m.className='msg to'; m.textContent = input.value;
-    document.querySelector('#chat .messages').appendChild(m);
-    input.value='';
-    showToast('Encouragement sent');
-  }
-});
-function showToast(txt){
-  const t = document.createElement('div');
-  t.textContent = txt;
-  t.style.position='fixed';
-  t.style.left='50%';
-  t.style.bottom='40px';
-  t.style.transform='translateX(-50%)';
-  t.style.background='rgba(11,37,64,0.9)';
-  t.style.color='#fff';
-  t.style.padding='10px 16px';
-  t.style.borderRadius='10px';
-  t.style.zIndex=9999;
-  document.body.appendChild(t);
-  setTimeout(()=> t.remove(),1400);
-}
 
-// default open onboarding
-navigateTo('onboarding');
-</script>
+    function toSizedBlob(canvas, type, quality = 0.92) {
+      return new Promise(resolve => {
+        canvas.toBlob(blob => resolve(blob), type, quality);
+      });
+    }
+
+    async function loadImageFromFile(file) {
+      const ext = file.name.split('.').pop().toLowerCase();
+      if (ext === 'psd') {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const psd = new PSD(new Uint8Array(reader.result));
+            psd.parse();
+            const img = new Image();
+            img.onload = () => resolve(img);
+            img.onerror = reject;
+            img.src = psd.image.toBase64();
+          };
+          reader.onerror = reject;
+          reader.readAsArrayBuffer(file);
+        });
+      } else {
+        return new Promise((resolve, reject) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = reject;
+          img.src = URL.createObjectURL(file);
+        });
+      }
+    }
+  </script>
 </body>
 </html>
